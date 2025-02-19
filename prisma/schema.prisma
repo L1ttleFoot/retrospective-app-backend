@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id      Int     @id @default(autoincrement())
+  value   String  @unique
+  users   User[]  @relation("UserRole")
+}
+
+model User {
+  id            String @id @default(cuid())
+  username      String @unique
+  password      String
+  roles         Role[] @relation("UserRole")
+}
+
+model Discussion {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sections  Section[]
+}
+
+model Section {
+  id           String     @id @default(cuid())
+  title        String
+  color        String
+
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  discussionId String
+
+  messages     Message[]
+}
+
+model Emoji {
+  id        String  @id @default(cuid())
+  character String
+
+  messages MessageEmoji[]
+}
+
+model Message {
+  id         String  @id @default(cuid())
+  text       String
+
+  section    Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId  String
+
+  emojies    MessageEmoji[]
+}
+
+model MessageEmoji {
+  id        String  @id @default(cuid())
+  emoji     Emoji   @relation(fields: [emojiId], references: [id])
+  emojiId   String
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String
+  count     Int     @default(0)
+
+  @@unique([emojiId, messageId])
+}

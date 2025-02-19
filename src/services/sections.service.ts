@@ -1,0 +1,22 @@
+import {prisma} from '..';
+import {Discussion, Section} from '@prisma/client';
+
+class SectionsService {
+    async createSection({sections}: {sections: Section[]}) {
+        return prisma.section.createManyAndReturn({data: sections});
+    }
+
+    async getSections(discussionId: Section['discussionId']) {
+        return prisma.section.findMany({where: {discussionId}});
+    }
+
+    async deleteSection(sectionId: Section['id']) {
+        return prisma.section.delete({where: {id: sectionId}});
+    }
+
+    async deleteSectionsWithDiscussion(id: Discussion['id']) {
+        return prisma.section.deleteMany({where: {discussionId: id}});
+    }
+}
+
+export default new SectionsService();
