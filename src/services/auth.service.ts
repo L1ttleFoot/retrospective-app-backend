@@ -45,10 +45,6 @@ class AuthServise {
 
         return {accessToken, refreshToken};
     }
-
-    getAllUsers() {
-        return prisma.user.findMany();
-    }
 }
 
 export default new AuthServise();

@@ -42,7 +42,7 @@ model Section {
 
 model Emoji {
   id        String  @id @default(cuid())
-  character String
+  character String @unique
 
   messages MessageEmoji[]
 }

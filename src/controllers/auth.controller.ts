@@ -12,7 +12,7 @@ class AuthController {
             res.json(user);
         } catch (error) {
             res.status(500).json({
-                error: `Failed to create discussion: ${(error as Error).message}`,
+                error: `Failed to create user: ${(error as Error).message}`,
             });
         }
     }
@@ -27,7 +27,7 @@ class AuthController {
             res.json({username: req.body.username});
         } catch (error) {
             res.status(500).json({
-                error: `Failed to create discussion: ${(error as Error).message}`,
+                error: `Failed to login: ${(error as Error).message}`,
             });
         }
     }
@@ -70,12 +70,6 @@ class AuthController {
         res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
         res.sendStatus(200);
-    }
-
-    async getAllUsers(req: Request, res: Response) {
-        const users = await authService.getAllUsers();
-
-        res.json(users);
     }
 }
 
