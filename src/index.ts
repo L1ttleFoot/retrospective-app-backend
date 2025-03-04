@@ -14,9 +14,13 @@ app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', router);
-app.all('*', (req, res) => {
+app.get('/', (_, res) => {
+    res.status(200).json({message: 'Hello World'});
+});
+app.all('*', (_, res) => {
     res.status(404).json({message: 'Not found'});
 });
+
 
 async function main() {
     app.listen(PORT, () => {
