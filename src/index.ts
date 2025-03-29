@@ -12,7 +12,7 @@ export const prisma = new PrismaClient();
 
 const allowedOrigins = [
     'http://localhost:3000',
-    'retrospective-app-navy.vercel.app'
+    'https://retrospective-app-navy.vercel.app'
   ];
 
 app.use(cors({origin: allowedOrigins, credentials: true}));
