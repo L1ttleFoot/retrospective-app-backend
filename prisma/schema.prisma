@@ -8,24 +8,27 @@ datasource db {
 }
 
 model Role {
-  id      Int     @id @default(autoincrement())
-  value   String  @unique
-  users   User[]  @relation("UserRole")
+  id    Int    @id @default(autoincrement())
+  value String @unique
+  users User[] @relation("UserRole")
 }
 
 model User {
-  id            String @id @default(cuid())
-  username      String @unique
-  password      String
-  roles         Role[] @relation("UserRole")
+  id        String @id @default(cuid())
+  password  String
+  username  String @unique
+  createdAt DateTime @default(now())
+  roles     Role[] @relation("UserRole")
+  discussions Discussion[]
 }
 
 model Discussion {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  ownerId   String
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   sections  Section[]
 }
 
@@ -33,37 +36,35 @@ model Section {
   id           String     @id @default(cuid())
   title        String
   color        String
-
-  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   discussionId String
-
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
   messages     Message[]
 }
 
 model Emoji {
-  id        String  @id @default(cuid())
-  character String @unique
-
-  messages MessageEmoji[]
+  id        String         @id
+  character String         @unique
+  messages  MessageEmoji[]
 }
 
 model Message {
-  id         String  @id @default(cuid())
-  text       String
-
-  section    Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  sectionId  String
-
-  emojies    MessageEmoji[]
+  id        String         @id @default(cuid())
+  text      String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  authorId  String?
+  sectionId String
+  section   Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  emojies   MessageEmoji[]
 }
 
 model MessageEmoji {
   id        String  @id @default(cuid())
-  emoji     Emoji   @relation(fields: [emojiId], references: [id])
   emojiId   String
-  message   Message @relation(fields: [messageId], references: [id])
   messageId String
   count     Int     @default(0)
+  emoji     Emoji   @relation(fields: [emojiId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
   @@unique([emojiId, messageId])
 }

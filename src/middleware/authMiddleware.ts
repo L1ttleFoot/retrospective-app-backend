@@ -2,11 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    /*  const authHeader = req.headers.authorization;
-
-    const token = authHeader && authHeader.split(' ')[1]; */
-
-    const accessToken = req.cookies.accessToken;
+    const accessToken = req.headers.authorization?.split(' ')[1];
 
     if (!accessToken) {
         res.sendStatus(401);

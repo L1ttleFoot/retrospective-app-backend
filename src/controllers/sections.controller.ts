@@ -19,8 +19,7 @@ class SectcionsController {
         res: Response,
     ) {
         try {
-            const {discussionId} = req.params;
-            const sections = await sectionsService.getSections(discussionId);
+            const sections = await sectionsService.getSections(req.params);
             res.json(sections);
         } catch (error) {
             res.status(500).json({error: `Failed to get sections: ${(error as Error).message}`});
@@ -29,8 +28,7 @@ class SectcionsController {
 
     async deleteSection(req: Request<{sectionId: Section['id']}>, res: Response) {
         try {
-            const {sectionId} = req.params;
-            const section = await sectionsService.deleteSection(sectionId);
+            const section = await sectionsService.deleteSection(req.params);
             res.json(section);
         } catch (error) {
             res.status(500).json({

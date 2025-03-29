@@ -19,12 +19,11 @@ class AuthController {
 
     async login(req: Request<{}, {}, User>, res: Response) {
         try {
-            const {accessToken, refreshToken} = await authService.login(req.body);
+            const {accessToken, refreshToken, roles, id} = await authService.login(req.body);
 
-            res.cookie('accessToken', accessToken);
             res.cookie('refreshToken', refreshToken);
 
-            res.json({username: req.body.username});
+            res.json({id, username: req.body.username, token: accessToken, roles});
         } catch (error) {
             res.status(500).json({
                 error: `Failed to login: ${(error as Error).message}`,
@@ -33,7 +32,7 @@ class AuthController {
     }
 
     refreshAccessToken(req: Request, res: Response) {
-        const accessToken = req.cookies.accessToken;
+        const accessToken = req.headers.authorization?.split(' ')[1];
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken || !refreshToken) {
@@ -53,21 +52,27 @@ class AuthController {
                 const accessToken = generateAccessToken(payload.id);
                 const refreshToken = generateRefreshToken(payload.id);
 
-                const user = await prisma.user.findUnique({where: {id: payload.id}});
+                const user = await prisma.user.findUnique({
+                    where: {id: payload.id},
+                    include: {roles: true},
+                });
                 if (!user) {
                     res.sendStatus(404);
                     return;
                 }
 
-                res.cookie('accessToken', accessToken);
                 res.cookie('refreshToken', refreshToken);
-                res.json({username: user?.username});
+                res.json({
+                    id: user.id,
+                    username: user?.username,
+                    token: accessToken,
+                    roles: user.roles,
+                });
             },
         );
     }
 
     logout(req: Request, res: Response) {
-        res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
         res.sendStatus(200);
     }

@@ -8,6 +8,12 @@ class AuthServise {
         const {password, ...other} = user;
         const role = await prisma.role.findUnique({where: {value: 'USER'}});
 
+        const existedUser = await prisma.user.findUnique({where: {username: user.username}});
+
+        if (existedUser) {
+            throw new Error('User already exists');
+        }
+
         if (!role) {
             throw new Error('Default role not found');
         }
@@ -29,8 +35,6 @@ class AuthServise {
             include: {roles: true},
         });
 
-        console.log(user);
-
         if (!user) {
             throw new Error('User not found');
         }
@@ -43,7 +47,9 @@ class AuthServise {
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
 
-        return {accessToken, refreshToken};
+        const roles = user.roles.map((role) => role.value);
+
+        return {accessToken, refreshToken, roles, id: user.id};
     }
 }
 

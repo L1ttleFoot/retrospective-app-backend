@@ -1,6 +1,6 @@
 import {PrismaClient} from '@prisma/client';
 import express from 'express';
-import router from './routs';
+import router from './routes';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -20,7 +20,6 @@ app.get('/', (_, res) => {
 app.all('*', (_, res) => {
     res.status(404).json({message: 'Not found'});
 });
-
 
 async function main() {
     app.listen(PORT, () => {
