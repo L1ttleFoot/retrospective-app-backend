@@ -47,9 +47,7 @@ class AuthServise {
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
 
-        const roles = user.roles.map((role) => role.value);
-
-        return {accessToken, refreshToken, roles, id: user.id};
+        return {accessToken, refreshToken, roles: user.roles, id: user.id};
     }
 }
 
