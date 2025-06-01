@@ -36,6 +36,7 @@ class AuthController {
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken || !refreshToken) {
+            console.log('No access token or refresh token provided');
             res.sendStatus(403);
             return;
         }
@@ -45,6 +46,7 @@ class AuthController {
             process.env.REFRESH_TOKEN_SECRET || '',
             async (err: jwt.VerifyErrors | null, payload: any) => {
                 if (err || !payload) {
+                    console.log('Invalid refresh token');
                     res.sendStatus(403);
                     return;
                 }
@@ -72,7 +74,7 @@ class AuthController {
         );
     }
 
-    logout(req: Request, res: Response) {
+    logout(_: Request, res: Response) {
         res.clearCookie('refreshToken');
         res.sendStatus(200);
     }
