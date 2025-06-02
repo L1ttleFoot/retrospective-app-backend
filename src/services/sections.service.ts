@@ -6,11 +6,11 @@ class SectionsService {
         return prisma.section.createManyAndReturn({data: sections});
     }
 
-    async getSections({discussionId}: {discussionId:Section['discussionId']}) {
+    async getSections({discussionId}: {discussionId: Section['discussionId']}) {
         return prisma.section.findMany({where: {discussionId}});
     }
 
-    async deleteSection({sectionId}: {sectionId:Section['id']}) {
+    async deleteSection({sectionId}: {sectionId: Section['id']}) {
         return prisma.section.delete({where: {id: sectionId}});
     }
 

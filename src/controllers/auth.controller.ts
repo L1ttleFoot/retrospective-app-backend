@@ -36,7 +36,7 @@ class AuthController {
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken || !refreshToken) {
-            console.log('No access token or refresh token provided');
+            console.log('No access token or refresh token provided', 'accessToken:' + accessToken, 'refreshToken:' +refreshToken);
             res.sendStatus(403);
             return;
         }

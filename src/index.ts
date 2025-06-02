@@ -10,12 +10,16 @@ const PORT = process.env.PORT || 8080;
 
 export const prisma = new PrismaClient();
 
-const allowedOrigins = [
-    'http://localhost:3000',
-    'https://retrospective-app-navy.vercel.app'
-  ];
+const allowedOrigins = ['http://localhost:3000', 'https://retrospective-app-navy.vercel.app'];
 
-app.use(cors({origin: allowedOrigins, credentials: true,  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],allowedHeaders: ['Content-Type', 'Authorization'],}));
+app.use(
+    cors({
+        origin: allowedOrigins,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', router);
