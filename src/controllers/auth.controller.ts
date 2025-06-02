@@ -21,7 +21,9 @@ class AuthController {
         try {
             const {accessToken, refreshToken, roles, id} = await authService.login(req.body);
 
-            res.cookie('refreshToken', refreshToken);
+            res.cookie('refreshToken', refreshToken, {
+                sameSite: 'none',
+            });
 
             res.json({id, username: req.body.username, token: accessToken, roles});
         } catch (error) {
@@ -36,7 +38,12 @@ class AuthController {
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken || !refreshToken) {
-            console.log('No access token or refresh token provided', 'accessToken:' + accessToken, 'refreshToken:' +refreshToken);
+            console.log(req.cookies);
+            console.log(
+                'No access token or refresh token provided',
+                'accessToken:' + accessToken,
+                'refreshToken:' + refreshToken,
+            );
             res.sendStatus(403);
             return;
         }
@@ -63,7 +70,9 @@ class AuthController {
                     return;
                 }
 
-                res.cookie('refreshToken', refreshToken);
+                res.cookie('refreshToken', refreshToken, {
+                    sameSite: 'none',
+                });
                 res.json({
                     id: user.id,
                     username: user?.username,
