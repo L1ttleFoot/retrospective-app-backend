@@ -22,7 +22,8 @@ class AuthController {
             const {accessToken, refreshToken, roles, id} = await authService.login(req.body);
 
             res.cookie('refreshToken', refreshToken, {
-                sameSite: 'none',
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             });
 
             res.json({id, username: req.body.username, token: accessToken, roles});
@@ -71,7 +72,8 @@ class AuthController {
                 }
 
                 res.cookie('refreshToken', refreshToken, {
-                    sameSite: 'none',
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                 });
                 res.json({
                     id: user.id,
