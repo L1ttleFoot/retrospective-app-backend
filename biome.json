@@ -1,0 +1,59 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": { "useImportType": "off", "noUselessElse": "error", "noImplicitBoolean": "off" },
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "error",
+				"useExhaustiveDependencies": "warn"
+			},
+			"complexity": { "noExcessiveCognitiveComplexity": "warn", "useArrowFunction": "off" },
+			"suspicious": { "noExplicitAny": "error", "noShadowRestrictedNames": "warn" }
+		}
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"useSortedProperties": "on",
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [[":PACKAGE:"], ":BLANK_LINE:", [":ALIAS:"], ":BLANK_LINE:", [":PATH:"]],
+						"identifierOrder": "lexicographic"
+					}
+				}
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 100,
+		"attributePosition": "auto",
+		"bracketSameLine": false,
+		"bracketSpacing": true,
+		"expand": "never",
+		"useEditorconfig": true
+	},
+	"files": { "includes": ["src/**/*.{js,ts,jsx,tsx,css}"] },
+	"javascript": {
+		"formatter": {
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"trailingCommas": "all",
+			"semicolons": "always",
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"quoteStyle": "single",
+			"attributePosition": "auto",
+			"bracketSpacing": false
+		},
+		"globals": ["React", "JSX"]
+	}
+}

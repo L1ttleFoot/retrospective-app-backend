@@ -1,4 +1,5 @@
 import {Router} from 'express';
+
 import sectionsController from '../controllers/sections.controller';
 import {authMiddleware} from '../middleware/authMiddleware';
 

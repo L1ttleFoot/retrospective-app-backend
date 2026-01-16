@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import {prisma} from '..';
 import {generateAccessToken, generateRefreshToken} from '../helpers/jwtTokens';
 
-class AuthServise {
+class AuthSessionsServise {
 	async register(user: User) {
 		const {password, ...other} = user;
 		const role = await prisma.role.findUnique({where: {value: 'USER'}});
@@ -45,4 +45,4 @@ class AuthServise {
 	}
 }
 
-export default new AuthServise();
+export default new AuthSessionsServise();
