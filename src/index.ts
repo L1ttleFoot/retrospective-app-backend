@@ -15,6 +15,7 @@ const allowedOrigins = [
 	'http://localhost:3000',
 	'http://localhost:3001',
 	'https://retrospective-app-navy.vercel.app',
+	'raspberry-pi.local:3000',
 ];
 
 app.use(
