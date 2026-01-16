@@ -5,7 +5,7 @@
     "postinstall": "prisma generate",
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
-    "build": "tsc",
+    "build:docker": "tsc",
     "format": "biome format  . --write",
     "lint": "biome check . ",
     "lint:fix": "biome check . --write"
