@@ -1,4 +1,4 @@
-import {User} from '@prisma/client';
+import {User} from '@prisma/types';
 import {Request, Response} from 'express';
 
 import authSessionsService from '../services/auth-sessions.service';

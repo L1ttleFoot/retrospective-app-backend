@@ -1,6 +1,7 @@
-import {Emoji, Message, Section} from '@prisma/client';
+import {Emoji, Message, Section} from '@prisma/types';
 import {Request, Response} from 'express';
 
+import {EVENTS, appEvents} from '../helpers/events';
 import {notifyAllClients} from '../routes/SSE';
 import messagesService from '../services/messages.service';
 
@@ -9,6 +10,7 @@ class MessagesController {
 		try {
 			const message = await messagesService.createMessage(req.body, req.headers.authorization);
 			notifyAllClients({main: 'messages', id: req.body.sectionId});
+			//appEvents.emit(EVENTS.MESSAGE, message);
 			res.json(message);
 		} catch (error) {
 			res.status(500).json({error: `Failed to create message: ${(error as Error).message}`});
@@ -26,13 +28,13 @@ class MessagesController {
 	}
 
 	async updateMessage(
-		req: Request<{messageId: Message['id']}, unknown, {sectionId: Section['id']}>,
+		req: Request<{messageId: Message['id']}, unknown, Partial<Message>>,
 		res: Response,
 	) {
 		try {
 			const {messageId} = req.params;
-			const {sectionId} = req.body;
-			const message = await messagesService.updateMessage(messageId, sectionId);
+			const dto = req.body;
+			const message = await messagesService.updateMessage(messageId, dto);
 			res.json(message);
 		} catch (error) {
 			res.status(500).json({error: `Failed to update message: ${(error as Error).message}`});
@@ -44,6 +46,7 @@ class MessagesController {
 			const {messageId} = req.params;
 			const message = await messagesService.deleteMessage(messageId);
 			notifyAllClients({main: 'messages', id: message.sectionId});
+			//appEvents.emit(EVENTS.MESSAGE, message);
 			res.json(message);
 		} catch (error) {
 			res.status(500).json({error: `Failed to delete message: ${(error as Error).message}`});

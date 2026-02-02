@@ -1,4 +1,4 @@
-import {Section} from '@prisma/client';
+import {Section} from '@prisma/types';
 import {Request, Response} from 'express';
 
 import sectionsService from '../services/sections.service';

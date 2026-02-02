@@ -1,4 +1,4 @@
-import {Discussion, Section} from '@prisma/client';
+import {Discussion, Section} from '@prisma/types';
 
 import {prisma} from '..';
 

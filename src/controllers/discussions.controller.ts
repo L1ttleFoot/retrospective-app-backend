@@ -1,4 +1,4 @@
-import {Discussion} from '@prisma/client';
+import {Discussion} from '@prisma/types';
 import {Request, Response} from 'express';
 
 import discussionsService from '../services/discussions.service';

@@ -30,8 +30,6 @@ COPY --from=builder /app/dist ./dist
 
 ENV NODE_ENV=production
 
-ENV DATABASE_URL=postgresql://postgres.cgorbjkqjbxlxiuijoco:UNQ1rs2eWw38L1ZQ@aws-0-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-
 ENV PORT=8080
 
 EXPOSE 8080

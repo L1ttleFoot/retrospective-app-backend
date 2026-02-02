@@ -1,4 +1,4 @@
-import {Emoji, Message, Section} from '@prisma/client';
+import {Emoji, Message, Section} from '@prisma/types';
 import jwt, {JwtPayload} from 'jsonwebtoken';
 
 import {prisma} from '..';
@@ -26,7 +26,7 @@ class MessagesService {
 				emojies: {include: {emoji: true}},
 				section: {include: {discussion: {select: {ownerId: true}}}},
 			},
-			orderBy: {updatedAt: 'asc'},
+			orderBy: {createdAt: 'asc'},
 		});
 
 		return messages.map((message) => {
@@ -35,8 +35,8 @@ class MessagesService {
 		});
 	}
 
-	async updateMessage(messageId: Message['id'], sectionId: Section['id']) {
-		return prisma.message.update({where: {id: messageId}, data: {sectionId}});
+	async updateMessage(messageId: Message['id'], payload: Partial<Message>) {
+		return prisma.message.update({where: {id: messageId}, data: payload});
 	}
 
 	async deleteMessage(messageId: Message['id']) {
