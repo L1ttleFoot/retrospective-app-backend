@@ -21,6 +21,7 @@ model User {
   roles       Role[] @relation("UserRole")
   discussions Discussion[]
   sessions    Session[]
+  templates   Template[]
 }
 
 model Discussion {
@@ -76,4 +77,20 @@ model Session {
   user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+model Template {
+  id String @id @default(uuid())
+  title String
+  sections TemplateSection[]
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TemplateSection {
+  id         String      @id @default(uuid())
+  title      String
+  color      String
+  templateId String
+  template   Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
 }

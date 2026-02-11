@@ -1,14 +1,14 @@
 import {Discussion} from '@prisma/types';
 
-import {prisma} from '..';
+import {prisma} from '../app';
 
 class DiscussionsService {
 	async createDiscussion(discussion: Discussion) {
 		return prisma.discussion.create({data: discussion});
 	}
 
-	async getDiscussions() {
-		return prisma.discussion.findMany();
+	async getDiscussions(id: string) {
+		return prisma.discussion.findMany({where: {ownerId: id}, orderBy: {createdAt: 'desc'}});
 	}
 
 	async deleteDiscussion(discussionId: Discussion['id']) {

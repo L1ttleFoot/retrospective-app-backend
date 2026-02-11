@@ -10,16 +10,19 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
 	}
 
 	const secret = process.env.ACCESS_TOKEN_SECRET;
+
 	if (!secret) {
 		res.sendStatus(500);
 		return;
 	}
 
-	jwt.verify(accessToken, secret, (err: jwt.VerifyErrors | null) => {
+	jwt.verify(accessToken, secret, (err: jwt.VerifyErrors | null, decoded) => {
 		if (err) {
 			res.sendStatus(401);
 			return;
 		}
+
+		req.user = decoded;
 
 		next();
 	});

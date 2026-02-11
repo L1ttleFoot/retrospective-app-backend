@@ -2,7 +2,7 @@ import {User} from '@prisma/types';
 import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 
-import {prisma} from '..';
+import {prisma} from '../app';
 import {generateAccessToken, generateRefreshToken} from '../helpers/jwtTokens';
 import authService from '../services/auth.service';
 

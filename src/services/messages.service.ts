@@ -1,7 +1,7 @@
 import {Emoji, Message, Section} from '@prisma/types';
 import jwt, {JwtPayload} from 'jsonwebtoken';
 
-import {prisma} from '..';
+import {prisma} from '../app';
 
 class MessagesService {
 	async createMessage(message: Message, auth: string | undefined) {

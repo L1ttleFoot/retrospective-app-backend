@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 
-import {prisma} from '..';
+import {prisma} from '../app';
 
 class AdminController {
 	async getByModel(req: Request<{model: 'user' | 'role' | 'emoji'}>, res: Response) {

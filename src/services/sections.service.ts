@@ -1,6 +1,6 @@
 import {Discussion, Section} from '@prisma/types';
 
-import {prisma} from '..';
+import {prisma} from '../app';
 
 class SectionsService {
 	async createSection({sections}: {sections: Section[]}) {

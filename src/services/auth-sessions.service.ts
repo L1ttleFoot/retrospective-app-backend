@@ -1,7 +1,7 @@
 import {User} from '@prisma/types';
 import bcrypt from 'bcryptjs';
 
-import {prisma} from '..';
+import {prisma} from '../app';
 import {generateAccessToken, generateRefreshToken} from '../helpers/jwtTokens';
 
 class AuthSessionsServise {

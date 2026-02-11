@@ -15,9 +15,9 @@ class DiscussionsController {
 		}
 	}
 
-	async getDiscussions(_req: Request, res: Response) {
+	async getDiscussions(req: Request, res: Response) {
 		try {
-			const discussions = await discussionsService.getDiscussions();
+			const discussions = await discussionsService.getDiscussions(req.user.id);
 			res.json(discussions);
 		} catch (error) {
 			res.status(500).json({error: `Failed to get discussions: ${(error as Error).message}`});

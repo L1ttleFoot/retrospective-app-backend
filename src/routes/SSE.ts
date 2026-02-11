@@ -35,6 +35,7 @@ router.use('/', (req: Request, res: Response) => {
 	activeClients.add(res);
 
 	req.on('close', () => {
+		console.log('client disconntected');
 		activeClients.delete(res);
 	});
 });
