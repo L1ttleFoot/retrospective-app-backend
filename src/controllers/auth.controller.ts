@@ -3,8 +3,8 @@ import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 
 import {prisma} from '../app';
-import {generateAccessToken, generateRefreshToken} from '../helpers/jwtTokens';
 import authService from '../services/auth.service';
+import {generateAccessToken, generateRefreshToken} from '../utils/jwtTokens';
 
 class AuthController {
 	async register(req: Request<unknown, unknown, User>, res: Response) {

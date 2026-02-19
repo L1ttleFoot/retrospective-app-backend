@@ -1,3 +1,4 @@
+import {Emoji, Role, User} from '@prisma/types';
 import {Request, Response} from 'express';
 
 import {prisma} from '../app';
@@ -7,7 +8,11 @@ class AdminController {
 		const {model} = req.params;
 
 		try {
-			let result;
+			let result:
+				| Role[]
+				| (Pick<User, 'id' | 'username'> & {roles: Role[]})[]
+				| Emoji[]
+				| undefined;
 			switch (model) {
 				case 'user':
 					result = await prisma.user.findMany({select: {id: true, username: true, roles: true}});

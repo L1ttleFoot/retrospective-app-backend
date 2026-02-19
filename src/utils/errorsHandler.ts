@@ -1,0 +1,22 @@
+export class ApiError extends Error {
+	statusCode: number;
+	message: string;
+
+	constructor(statusCode: number, message: string) {
+		super(message);
+		this.statusCode = statusCode;
+		this.message = message;
+	}
+}
+
+export const handleError = (error: unknown) => {
+	if (error instanceof ApiError) {
+		return {statusCode: error.statusCode, message: error.message};
+	}
+
+	if (error instanceof Error) {
+		return {statusCode: 500, message: error.message};
+	}
+
+	return {statusCode: 500, message: 'Unknown error occurred'};
+};

@@ -1,6 +1,7 @@
+import {error} from 'console';
 import {Request, Response, Router} from 'express';
 
-import {EVENTS, appEvents} from '../helpers/events';
+import {EVENTS, appEvents} from '../utils/events';
 
 const router = Router();
 
@@ -43,7 +44,12 @@ router.use('/', (req: Request, res: Response) => {
 export const notifyAllClients = (data: Record<string, unknown>) => {
 	const payload = `data: ${JSON.stringify(data)}\n\n`;
 	activeClients.forEach((client) => {
-		client.write(payload);
+		try {
+			client.write(payload);
+		} catch (error) {
+			console.log(error);
+			activeClients.delete(client);
+		}
 	});
 };
 

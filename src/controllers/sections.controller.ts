@@ -2,8 +2,9 @@ import {Section} from '@prisma/types';
 import {Request, Response} from 'express';
 
 import sectionsService from '../services/sections.service';
+import {handleError} from '../utils/errorsHandler';
 
-class SectcionsController {
+class SectionsController {
 	async createSections(req: Request<unknown, unknown, {sections: Section[]}>, res: Response) {
 		try {
 			const sections = await sectionsService.createSection(req.body);
@@ -30,9 +31,10 @@ class SectcionsController {
 			const section = await sectionsService.deleteSection(req.params);
 			res.json(section);
 		} catch (error) {
-			res.status(500).json({error: `Failed to delete section: ${(error as Error).message}`});
+			const {statusCode, message} = handleError(error);
+			res.status(statusCode).json({error: message});
 		}
 	}
 }
 
-export default new SectcionsController();
+export default new SectionsController();

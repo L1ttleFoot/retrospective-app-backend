@@ -2,7 +2,8 @@ import {User} from '@prisma/types';
 import bcrypt from 'bcryptjs';
 
 import {prisma} from '../app';
-import {generateAccessToken, generateRefreshToken} from '../helpers/jwtTokens';
+import {ApiError} from '../utils/errorsHandler';
+import {generateAccessToken, generateRefreshToken} from '../utils/jwtTokens';
 
 class AuthSessionsServise {
 	async register(user: User) {
@@ -12,11 +13,11 @@ class AuthSessionsServise {
 		const existedUser = await prisma.user.findUnique({where: {username: user.username}});
 
 		if (existedUser) {
-			throw new Error('User already exists');
+			throw new ApiError(409, 'User with this username already exists');
 		}
 
 		if (!role) {
-			throw new Error('Default role not found');
+			throw new ApiError(500, 'Default role not found');
 		}
 
 		const hashedPassword = await bcrypt.hash(password, 7);
@@ -30,12 +31,12 @@ class AuthSessionsServise {
 		const user = await prisma.user.findUnique({where: {username}, include: {roles: true}});
 
 		if (!user) {
-			throw new Error('User not found');
+			throw new ApiError(404, 'User not found');
 		}
 
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
-			throw new Error('Invalid password');
+			throw new ApiError(401, 'Invalid password');
 		}
 
 		const accessToken = generateAccessToken(user.id);

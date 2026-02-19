@@ -1,9 +1,10 @@
 import {Emoji, Message, Section} from '@prisma/types';
 import {Request, Response} from 'express';
 
-import {EVENTS, appEvents} from '../helpers/events';
 import {notifyAllClients} from '../routes/SSE';
 import messagesService from '../services/messages.service';
+import {handleError} from '../utils/errorsHandler';
+import {EVENTS, appEvents} from '../utils/events';
 
 class MessagesController {
 	async createMessage(req: Request<unknown, unknown, Message>, res: Response) {
@@ -13,7 +14,8 @@ class MessagesController {
 			//appEvents.emit(EVENTS.MESSAGE, message);
 			res.json(message);
 		} catch (error) {
-			res.status(500).json({error: `Failed to create message: ${(error as Error).message}`});
+			const {statusCode, message} = handleError(error);
+			res.status(statusCode).json({error: `Failed to create message: ${message}`});
 		}
 	}
 

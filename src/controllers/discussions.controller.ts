@@ -2,6 +2,7 @@ import {Discussion} from '@prisma/types';
 import {Request, Response} from 'express';
 
 import discussionsService from '../services/discussions.service';
+import {handleError} from '../utils/errorsHandler';
 
 //import sectcionsService from '../services/sections.service';
 
@@ -11,7 +12,8 @@ class DiscussionsController {
 			const discussions = await discussionsService.createDiscussion(req.body);
 			res.json(discussions);
 		} catch (error) {
-			res.status(500).json({error: `Failed to create discussion: ${(error as Error).message}`});
+			const {statusCode, message} = handleError(error);
+			res.status(statusCode).json({error: `Failed to create discussion: ${message}`});
 		}
 	}
 
@@ -20,7 +22,8 @@ class DiscussionsController {
 			const discussions = await discussionsService.getDiscussions(req.user.id);
 			res.json(discussions);
 		} catch (error) {
-			res.status(500).json({error: `Failed to get discussions: ${(error as Error).message}`});
+			const {statusCode, message} = handleError(error);
+			res.status(statusCode).json({error: `Failed to get discussions: ${message}`});
 		}
 	}
 
@@ -31,7 +34,8 @@ class DiscussionsController {
 			const discussion = await discussionsService.deleteDiscussion(discussionId);
 			res.json(discussion);
 		} catch (error) {
-			res.status(500).json({error: `Failed to delete discussion: ${(error as Error).message}`});
+			const {statusCode, message} = handleError(error);
+			res.status(statusCode).json({error: `Failed to delete discussion: ${message}`});
 		}
 	}
 }
