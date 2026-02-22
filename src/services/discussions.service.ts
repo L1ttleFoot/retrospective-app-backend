@@ -1,6 +1,7 @@
 import {Discussion} from '@prisma/types';
 
 import {prisma} from '../app';
+import {ApiError} from '../utils/errorsHandler';
 
 class DiscussionsService {
 	async createDiscussion(discussion: Discussion) {
@@ -8,6 +9,12 @@ class DiscussionsService {
 	}
 
 	async getDiscussions(id: string) {
+		const user = await prisma.user.findUnique({where: {id}, include: {roles: true}});
+
+		if (!user) {
+			throw new ApiError(404, 'User not found');
+		}
+
 		return prisma.discussion.findMany({where: {ownerId: id}, orderBy: {createdAt: 'desc'}});
 	}
 

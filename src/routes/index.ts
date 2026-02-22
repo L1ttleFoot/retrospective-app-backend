@@ -1,5 +1,6 @@
 import {Router} from 'express';
 
+import {authMiddleware} from '../middleware/authMiddleware';
 import adminRouter from './admin';
 import authRouter from './auth';
 import authSessionsRouter from './auth-sessions';
@@ -12,11 +13,11 @@ import testRouter from './test';
 
 const router = Router();
 
-router.use('/', authRouter);
-router.use('/discussions', discussionsRouter);
+router.use('/auth', authRouter);
+router.use('/discussions', authMiddleware, discussionsRouter);
 router.use('/sections', sectionsRouter);
 router.use('/messages', messagesRouter);
-router.use('/templates', templatesRouter);
+router.use('/templates', authMiddleware, templatesRouter);
 
 router.use('/test', testRouter);
 router.use('/admin', adminRouter);

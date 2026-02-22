@@ -36,7 +36,7 @@ app.use('/api', router);
 app.get('/', (_, res) => {
 	res.status(200).json({message: 'Hello World'});
 });
-app.all('*', (_, res) => {
+app.all('*', (_req, res) => {
 	res.status(404).json({message: 'Not found'});
 });
 

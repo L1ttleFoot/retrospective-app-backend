@@ -41,7 +41,7 @@
 		"expand": "never",
 		"useEditorconfig": true
 	},
-	"files": { "includes": ["src/**/*.{js,ts,jsx,tsx,css}"] },
+	"files": { "includes": ["src/**/*.{js,ts,jsx,tsx,css}", "tests/**/*.test.{js,ts,jsx,tsx,css}"] },
 	"javascript": {
 		"formatter": {
 			"jsxQuoteStyle": "double",
