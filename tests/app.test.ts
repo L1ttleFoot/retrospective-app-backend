@@ -1,6 +1,7 @@
 import request from 'supertest';
 
-import app, {prisma} from '../src/app';
+import app from '../src/app';
+import {prisma} from '../src/prisma';
 import {generateAccessToken} from '../src/utils/jwtTokens';
 
 afterAll(async () => {

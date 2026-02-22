@@ -1,7 +1,8 @@
-import {User} from '@prisma/types';
 import bcrypt from 'bcryptjs';
 
-import {prisma} from '../app';
+import {User} from '@/generated/prisma/client';
+
+import {prisma} from '../prisma';
 import {ApiError} from '../utils/errorsHandler';
 import {generateAccessToken, generateRefreshToken} from '../utils/jwtTokens';
 

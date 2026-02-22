@@ -1,6 +1,8 @@
 import {NextFunction, Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 
+import {User} from '@/generated/prisma/client';
+
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 	const accessToken = req.headers.authorization?.split(' ')[1];
 
@@ -22,7 +24,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
 			return;
 		}
 
-		req.user = decoded;
+		req.user = decoded as User;
 
 		next();
 	});

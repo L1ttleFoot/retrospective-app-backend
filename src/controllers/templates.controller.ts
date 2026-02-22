@@ -1,5 +1,6 @@
-import {Template, TemplateSection} from '@prisma/types';
 import {Request, Response} from 'express';
+
+import {Template, TemplateSection} from '@/generated/prisma/client';
 
 import templateService from '../services/template.service';
 
@@ -10,7 +11,7 @@ class TemplatesController {
 	) {
 		try {
 			const templates = await templateService.createTemplates({
-				id: req.user.id,
+				id: req.user?.id || '',
 				title: req.body.title,
 				sections: req.body.sections,
 			});
@@ -22,7 +23,7 @@ class TemplatesController {
 
 	async getTemplates(req: Request, res: Response) {
 		try {
-			const templates = await templateService.getTemplates(req.user);
+			const templates = await templateService.getTemplates(req.user?.id || '');
 			res.json(templates);
 		} catch (error) {
 			res.status(500).json({error: `Failed to get templates: ${(error as Error).message}`});

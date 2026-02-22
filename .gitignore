@@ -3,4 +3,4 @@ dist
 .env
 .idea
 
-prisma/generated
+src/generated

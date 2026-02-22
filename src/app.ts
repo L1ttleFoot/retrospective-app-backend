@@ -1,17 +1,11 @@
 import 'dotenv/config';
-import {PrismaPg} from '@prisma/adapter-pg';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 
-import {PrismaClient} from '../prisma/generated/prisma/client';
 import router from './routes';
 
 const app = express();
-
-const adapter = new PrismaPg({connectionString: process.env.DATABASE_URL});
-
-export const prisma = new PrismaClient({adapter});
 
 const allowedOrigins = [
 	'http://localhost:3000',

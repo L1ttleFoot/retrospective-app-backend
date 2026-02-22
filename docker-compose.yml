@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: micro_rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
+    networks:
+      - app-network
+
+  backend:
+    build: .
+    container_name: retro-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DIRECT_URL1=postgresql://postgres.cgorbjkqjbxlxiuijoco:rRQSyJeXnudPTi7o@aws-0-eu-north-1.pooler.supabase.com:5432/postgres
+      - DATABASE_URL1=postgresql://postgres.cgorbjkqjbxlxiuijoco:rRQSyJeXnudPTi7o@aws-0-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+      - DATABASE_URL=postgresql://user:password@db:5432/mydatabase
+      - DIRECT_URL=postgresql://user:password@db:5432/mydatabase
+      - ACCESS_TOKEN_SECRET=access-token-secret
+      - REFRESH_TOKEN_SECRET=refresh-token-secret
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
+  frontend:
+    build: ./retrospective-app
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  db:
+    image: postgres:17-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  rabbit_data:
+  postgres_data:

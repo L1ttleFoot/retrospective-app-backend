@@ -1,6 +1,6 @@
-import {Discussion} from '@prisma/types';
+import {Discussion} from '@/generated/prisma/client';
 
-import {prisma} from '../app';
+import {prisma} from '../prisma';
 import {ApiError} from '../utils/errorsHandler';
 
 class DiscussionsService {

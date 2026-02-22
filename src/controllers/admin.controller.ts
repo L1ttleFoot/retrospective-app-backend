@@ -1,7 +1,8 @@
-import {Emoji, Role, User} from '@prisma/types';
 import {Request, Response} from 'express';
 
-import {prisma} from '../app';
+import {Emoji, Role, User} from '@/generated/prisma/client';
+
+import {prisma} from '../prisma';
 
 class AdminController {
 	async getByModel(req: Request<{model: 'user' | 'role' | 'emoji'}>, res: Response) {

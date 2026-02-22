@@ -1,5 +1,6 @@
-import {Section} from '@prisma/types';
 import {Request, Response} from 'express';
+
+import {Section} from '@/generated/prisma/client';
 
 import sectionsService from '../services/sections.service';
 import {handleError} from '../utils/errorsHandler';

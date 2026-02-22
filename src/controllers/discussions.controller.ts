@@ -1,5 +1,6 @@
-import {Discussion} from '@prisma/types';
 import {Request, Response} from 'express';
+
+import {Discussion} from '@/generated/prisma/client';
 
 import discussionsService from '../services/discussions.service';
 import {handleError} from '../utils/errorsHandler';
@@ -19,7 +20,7 @@ class DiscussionsController {
 
 	async getDiscussions(req: Request, res: Response) {
 		try {
-			const discussions = await discussionsService.getDiscussions(req.user.id);
+			const discussions = await discussionsService.getDiscussions(req.user?.id ?? '');
 			res.json(discussions);
 		} catch (error) {
 			const {statusCode, message} = handleError(error);

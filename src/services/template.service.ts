@@ -1,6 +1,6 @@
-import {Template, TemplateSection} from '@prisma/types';
+import {Template, TemplateSection} from '@/generated/prisma/client';
 
-import {prisma} from '../app';
+import {prisma} from '../prisma';
 
 class TemplateService {
 	async createTemplates({
@@ -17,7 +17,7 @@ class TemplateService {
 		});
 	}
 
-	async getTemplates({id}: {id: Template['id']}) {
+	async getTemplates(id: Template['id']) {
 		return prisma.template.findMany({where: {userId: id}, include: {sections: true}});
 	}
 

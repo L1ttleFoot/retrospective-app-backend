@@ -1,8 +1,9 @@
-import {User} from '@prisma/types';
 import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 
-import {prisma} from '../app';
+import {User} from '@/generated/prisma/client';
+
+import {prisma} from '../prisma';
 import authService from '../services/auth.service';
 import {generateAccessToken, generateRefreshToken} from '../utils/jwtTokens';
 

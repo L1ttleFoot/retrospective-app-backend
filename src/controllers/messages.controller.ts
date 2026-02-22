@@ -1,5 +1,6 @@
-import {Emoji, Message, Section} from '@prisma/types';
 import {Request, Response} from 'express';
+
+import {Emoji, Message, Section} from '@/generated/prisma/client';
 
 import {notifyAllClients} from '../routes/SSE';
 import messagesService from '../services/messages.service';

@@ -1,8 +1,9 @@
 import 'dotenv/config';
 
-import app, {prisma} from './app';
+import app from './app';
+import {prisma} from './prisma';
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 async function main() {
 	app.listen(PORT, () => {
