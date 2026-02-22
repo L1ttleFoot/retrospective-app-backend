@@ -14,5 +14,5 @@
       "@prisma/types": ["./prisma/generated/prisma/client"] 
     }
   },
-  "include": ["src/**/*", "express.d.ts"]
+  "include": ["src/**/*"]
 }

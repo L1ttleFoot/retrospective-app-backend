@@ -1,4 +1,3 @@
-import {error} from 'console';
 import {Request, Response, Router} from 'express';
 
 import {EVENTS, appEvents} from '../utils/events';
@@ -13,12 +12,10 @@ router.use('/', (req: Request, res: Response) => {
 	res.setHeader('Content-Type', 'text/event-stream');
 	res.setHeader('Cache-Control', 'no-cache');
 	res.setHeader('Connection', 'keep-alive');
+	res.setHeader('X-Accel-Buffering', 'no');
 	res.flushHeaders();
 
 	res.write(':ok\n\n');
-	/* setInterval(() => {
-		res.write(`data: ${JSON.stringify(new Date().toLocaleDateString())}\n\n`);
-	}, 2000); */
 
 	/* const broadcast = (data: Record<string, unknown>) => {
 		res.write(`data: ${JSON.stringify(data)}\n\n`);
