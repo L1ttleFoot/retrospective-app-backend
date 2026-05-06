@@ -15,10 +15,7 @@ class SectionsController {
 		}
 	}
 
-	async getSectionsByDiscussionId(
-		req: Request<{discussionId: Section['discussionId']}>,
-		res: Response,
-	) {
+	async getSectionsByBoardId(req: Request<{boardId: Section['boardId']}>, res: Response) {
 		try {
 			const sections = await sectionsService.getSections(req.params);
 			res.json(sections);

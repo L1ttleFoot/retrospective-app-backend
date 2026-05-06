@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "baseUrl": ".",
     "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
@@ -12,8 +11,9 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "paths": {
-      "@/generated/prisma/client": ["src/generated/prisma/"] 
-    }
+      "@/generated/prisma/client": ["./src/generated/prisma/"] 
+    },
+    "types": ["jest"]
   },
   "include": ["src/**/*"]
 }

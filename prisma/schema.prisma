@@ -19,14 +19,14 @@ model User {
   username    String @unique
   createdAt   DateTime @default(now())
   roles       Role[] @relation("UserRole")
-  discussions Discussion[]
+  boards      Board[]
   sessions    Session[]
   templates   Template[]
 }
 
-model Discussion {
+model Board {
   id        String    @id @default(cuid())
-  name      String
+  title      String
   ownerId   String
   owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt DateTime  @default(now())
@@ -38,15 +38,15 @@ model Section {
   id           String     @id @default(cuid())
   title        String
   color        String
-  discussionId String
-  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  boardId      String
+  board        Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
   messages     Message[]
 }
 
-model Emoji {
+model Reaction {
   id        String         @id
-  character String         @unique
-  messages  MessageEmoji[]
+  value     String         @unique
+  messages  MessageReaction[]
 }
 
 model Message {
@@ -54,21 +54,22 @@ model Message {
   text      String
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
-  authorId  String?
+  authorId  String
   sectionId String
   section   Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  emojies   MessageEmoji[]
+  reactions   MessageReaction[]
 }
 
-model MessageEmoji {
-  id        String  @id @default(cuid())
-  emojiId   String
-  messageId String
-  count     Int     @default(0)
-  emoji     Emoji   @relation(fields: [emojiId], references: [id])
-  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+model MessageReaction {
+  id         String  @id @default(cuid())
+  reactionId String
+  messageId  String
+  authorId   String
+  reaction   Reaction   @relation(fields: [reactionId], references: [id])
+  message    Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
 
-  @@unique([emojiId, messageId])
+  @@unique([reactionId, messageId, authorId])
 }
 
 model Session {

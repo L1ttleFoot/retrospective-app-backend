@@ -40,7 +40,9 @@ class AuthServise {
 			throw new ApiError(400, 'Invalid password');
 		}
 
-		const accessToken = generateAccessToken(user.id);
+		const roles = user.roles.map((r) => r.value);
+
+		const accessToken = generateAccessToken(user.id, roles);
 		const refreshToken = generateRefreshToken(user.id);
 
 		return {accessToken, refreshToken, roles: user.roles, id: user.id};

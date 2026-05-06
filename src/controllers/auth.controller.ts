@@ -60,14 +60,17 @@ class AuthController {
 
 				const userId = (payload as jwt.JwtPayload & {id: string}).id;
 
-				const accessToken = generateAccessToken(userId);
-				const refreshToken = generateRefreshToken(userId);
-
 				const user = await prisma.user.findUnique({where: {id: userId}, include: {roles: true}});
+
 				if (!user) {
 					res.sendStatus(404);
 					return;
 				}
+
+				const roles = user.roles.map((r) => r.value);
+
+				const accessToken = generateAccessToken(userId, roles);
+				const refreshToken = generateRefreshToken(userId);
 
 				res.cookie('refreshToken', refreshToken, {
 					httpOnly: process.env.NODE_ENV === 'production',

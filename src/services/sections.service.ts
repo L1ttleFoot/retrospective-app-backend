@@ -1,4 +1,4 @@
-import {Discussion, Section} from '@/generated/prisma/client';
+import {Board, Section} from '@/generated/prisma/client';
 
 import {prisma} from '../prisma';
 
@@ -7,16 +7,16 @@ class SectionsService {
 		return prisma.section.createManyAndReturn({data: sections});
 	}
 
-	async getSections({discussionId}: {discussionId: Section['discussionId']}) {
-		return prisma.section.findMany({where: {discussionId}});
+	async getSections({boardId}: {boardId: Section['boardId']}) {
+		return prisma.section.findMany({where: {boardId}});
 	}
 
 	async deleteSection({sectionId}: {sectionId: Section['id']}) {
 		return prisma.section.delete({where: {id: sectionId}});
 	}
 
-	async deleteSectionsWithDiscussion(id: Discussion['id']) {
-		return prisma.section.deleteMany({where: {discussionId: id}});
+	async deleteSectionsWithBoard(id: Board['id']) {
+		return prisma.section.deleteMany({where: {boardId: id}});
 	}
 }
 

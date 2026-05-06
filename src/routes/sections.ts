@@ -6,7 +6,7 @@ import {authMiddleware} from '../middleware/authMiddleware';
 const router = Router();
 
 router.post('/', authMiddleware, sectionsController.createSections);
-router.get('/:discussionId', sectionsController.getSectionsByDiscussionId);
+router.get('/:boardId', sectionsController.getSectionsByBoardId);
 router.delete('/:sectionId', authMiddleware, sectionsController.deleteSection);
 
 export default router;
