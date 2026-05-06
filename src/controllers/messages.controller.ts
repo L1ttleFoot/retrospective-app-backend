@@ -1,16 +1,17 @@
 import {Request, Response} from 'express';
 
-import {Emoji, Message, Section} from '@/generated/prisma/client';
+import {Message, MessageReaction, Reaction, Section} from '@/generated/prisma/client';
 
 import {notifyAllClients} from '../routes/SSE';
 import messagesService from '../services/messages.service';
 import {handleError} from '../utils/errorsHandler';
-import {EVENTS, appEvents} from '../utils/events';
 
 class MessagesController {
 	async createMessage(req: Request<unknown, unknown, Message>, res: Response) {
 		try {
-			const message = await messagesService.createMessage(req.body, req.headers.authorization);
+			const authorId = (req.user?.id ?? req.guestId)!;
+
+			const message = await messagesService.createMessage(req.body, authorId);
 			notifyAllClients({main: 'messages', id: req.body.sectionId});
 			//appEvents.emit(EVENTS.MESSAGE, message);
 			res.json(message);
@@ -23,7 +24,9 @@ class MessagesController {
 	async getMessagesBySectionId(req: Request<{sectionId: Section['id']}>, res: Response) {
 		try {
 			const {sectionId} = req.params;
-			const messages = await messagesService.getMessages(sectionId);
+
+			const userId = req.user?.id || req.guestId;
+			const messages = await messagesService.getMessages(sectionId, userId);
 			res.json(messages);
 		} catch (error) {
 			res.status(500).json({error: `Failed to get messages: ${(error as Error).message}`});
@@ -56,15 +59,38 @@ class MessagesController {
 		}
 	}
 
-	async addEmoji(req: Request<{messageId: Message['id']}, unknown, {emoji: Emoji}>, res: Response) {
+	async deleteAllMessage(req: Request, res: Response) {
+		try {
+			await messagesService.deleteAllMessages(req.user?.id || '');
+			res.status(200).send();
+		} catch (error) {
+			res.status(500).json({error: `Failed to delete messages: ${(error as Error).message}`});
+		}
+	}
+
+	async setReaction(
+		req: Request<{messageId: Message['id']}, unknown, {reactionId: Reaction['id']}>,
+		res: Response,
+	) {
 		try {
 			const {messageId} = req.params;
-			const {emoji} = req.body;
-			const message = await messagesService.addEmoji(messageId, emoji);
+			const {reactionId} = req.body;
+			const userId = req.user?.id || req.guestId || '';
+			const message = await messagesService.handleReaction(messageId, userId, reactionId);
+
+			//notifyAllClients({main: 'messages'});
+
 			res.json(message);
 		} catch (error) {
-			res.status(500).json({error: `Failed to add emoji: ${(error as Error).message}`});
+			res.status(500).json({error: `Failed to add reaction: ${(error as Error).message}`});
 		}
+	}
+
+	async removeReaction(req: Request<{reactionId: MessageReaction['id']}>, res: Response) {
+		const {reactionId} = req.params;
+
+		await messagesService.remodeReaction(reactionId);
+		res.sendStatus(200);
 	}
 }
 
