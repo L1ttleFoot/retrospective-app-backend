@@ -20,3 +20,18 @@ jobs:
           make up
 
           docker image prune -f
+          
+      - name: Deploy notify 
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          socks5: ${{secrets.SOCKS5_PROXY}}
+          message: |
+            Деплой.
+            Статус деплоя: ${{ job.status == 'success' && '✅ Успешно' || '❌ Ошибка' }}
+            Репозиторий: ${{ github.repository }}
+            Ветка: ${{ github.ref_name }}
+            Автор: ${{ github.actor }}
+            Посмотреть: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
