@@ -38,6 +38,9 @@ ENV NODE_ENV=production
 
 ENV PORT=8080
 
+ENV DATABASE_URL=postgresql://postgres.cgorbjkqjbxlxiuijoco:G9y5S7SpRBR4YEfJ@aws-0-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+ENV DIRECT_URL=postgresql://postgres.cgorbjkqjbxlxiuijoco:G9y5S7SpRBR4YEfJ@aws-0-eu-north-1.pooler.supabase.com:5432/postgres
+
 EXPOSE 8080
 
 #CMD ["node", "dist/index.js"]

@@ -19,33 +19,32 @@ class MessagesService {
 		});
 
 		return messages.map((message) => {
-			const {section, reactions, ...messageWithoutSection} = message;
+			const {section, reactions, ...rest} = message;
 
 			const reactionsMap = reactions.reduce((acc, curr) => {
 				const reactionValue = curr.reaction.value;
+				const existingValue = acc.get(reactionValue);
 				const isSelected = curr.authorId === userId;
 				const id = curr.reactionId;
 
-				if (acc.has(reactionValue)) {
-					acc.get(reactionValue).count++;
+				if (existingValue) {
+					existingValue.count++;
 					if (isSelected) {
-						acc.get(reactionValue).isSelected = true;
-						acc.get(reactionValue).userReactionId = curr.id;
+						existingValue.isSelected = true;
 					}
 				} else {
 					acc.set(reactionValue, {value: reactionValue, isSelected, count: 1, id});
 				}
 
 				return acc;
-			}, new Map());
+			}, new Map<
+				string,
+				{id: string; value: string; count: number; isSelected: boolean; userReactionId?: string}
+			>());
 
 			const formatedReactions = Array.from(reactionsMap.values());
 
-			return {
-				...messageWithoutSection,
-				reactions: formatedReactions,
-				ownerId: section.board.ownerId,
-			};
+			return {...rest, reactions: formatedReactions, ownerId: section.board.ownerId};
 		});
 	}
 

@@ -27,7 +27,7 @@ class MessagesController {
 
 			const userId = req.user?.id || req.guestId;
 			const messages = await messagesService.getMessages(sectionId, userId);
-			res.json(messages);
+			res.json({messages});
 		} catch (error) {
 			res.status(500).json({error: `Failed to get messages: ${(error as Error).message}`});
 		}

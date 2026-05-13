@@ -21,7 +21,7 @@ class AuthSessionsController {
 			res.cookie('refreshToken', refreshToken, {
 				httpOnly: process.env.NODE_ENV === 'production',
 				secure: process.env.NODE_ENV === 'production',
-				sameSite: 'none',
+				sameSite: 'lax',
 			});
 
 			res.json({id, username: req.body.username, token: accessToken, roles});

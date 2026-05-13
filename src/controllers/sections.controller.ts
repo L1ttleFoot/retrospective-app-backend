@@ -18,7 +18,7 @@ class SectionsController {
 	async getSectionsByBoardId(req: Request<{boardId: Section['boardId']}>, res: Response) {
 		try {
 			const sections = await sectionsService.getSections(req.params);
-			res.json(sections);
+			res.json({sections});
 		} catch (error) {
 			res.status(500).json({error: `Failed to get sections: ${(error as Error).message}`});
 		}

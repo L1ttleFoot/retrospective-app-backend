@@ -21,7 +21,7 @@ class BoardsController {
 	async getBoards(req: Request, res: Response) {
 		try {
 			const boards = await boardsService.getBoards(req.user?.id ?? '');
-			res.json(boards);
+			res.json({boards});
 		} catch (error) {
 			const {statusCode, message} = handleError(error);
 			res.status(statusCode).json({error: `Failed to get boards: ${message}`});
