@@ -1,0 +1,22 @@
+name: Deploy backend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted  
+    steps:
+      - name: Pull and Restart Docker Containers
+        run: |
+          cd /home/pi/retrospective/retrospective-app-backend 
+          
+          git pull
+          
+          cd ..
+
+          make up
+
+          docker image prune -f
