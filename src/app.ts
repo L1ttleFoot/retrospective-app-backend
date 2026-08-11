@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 
+import {loggerMiddleware} from './middleware/loggerMiddleware';
 import router from './routes';
 
 const app = express();
@@ -21,12 +22,13 @@ app.use(
 		credentials: true,
 		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 		allowedHeaders: ['Content-Type', 'Authorization', 'X-Guest-ID'],
-		exposedHeaders: ['X-Guest-ID'], 
+		exposedHeaders: ['X-Guest-ID'],
 	}),
 );
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(loggerMiddleware);
 app.use('/api', router);
 app.get('/', (_, res) => {
 	res.status(200).json({message: 'Hello World'});
